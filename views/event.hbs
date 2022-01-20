@@ -1,4 +1,4 @@
-    <!-- https://materializecss.com/grid.html -->
+    <!-- https://materializecss.com/grid -->
 
     <div class="container">
 
@@ -19,7 +19,7 @@
 
       </div>
 
-      <!-- https://materializecss.com/table.html -->
+      <!-- https://materializecss.com/table -->
       <table class="highlight centered responsive-table">
         <thead>
           <tr>
@@ -50,6 +50,7 @@
 
         <tbody>
           <tr>
+            {{#with event_data}}
 
             <!-- USER ONLY - Initialize page with appropriate state of button -->
             <td>
@@ -59,16 +60,16 @@
               <!-- If user already "starred" this event, it should be a yellow star -->
               <!-- <a onclick='toggleInterest(this, "{{ event_id }}"))'class="btn-floating btn-small waves-effect waves-light scale-transition scale-in yellow"><iclass="material-icons">star</i></a> -->
             </td>
-            <td class="blue-text clickable" onclick="location.href='/events/1.html'">Opening Ceremony</td>
-            <td> <a href='?filter=location:Auditorium'>Auditorium </a></td>
-            <td><a href='?filter=date:05-01-2022'>May 1 (Sat)</a> 10:30 AM</td>
-            <td>30m</td>
-            <td> <a href='?filter=type:Main'>Main</a></td>
-            <td>100<i class=material-icons>people</i></td>
+            <td class="blue-text clickable" onclick="location.href='/events/1'"></td>
+            <td> <a href='?filter=location:Auditorium'>{{event_location}}</a></td>
+            <td><a href='?filter=date:05-01-2022'>{{event_date}}</a>{{event_time}}</td>
+            <td>{{event_duration}}</td>
+            <td> <a href='?filter=type:Main'>{{event_type}}</a></td>
+            <td>{{event_interest}}<i class=material-icons>people</i></td>
             <!-- ADMIN ONLY BUTTONS -->
             <td nowrap>
 
-              <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="/eventform.html"><i
+              <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="/eventform"><i
                   class="material-icons">edit</i></a>
               <a class="btn-floating waves-effect waves-light red"
                 onclick='confirmDelete("Opening Ceremony","{{ event_id}}", ".")'><i
@@ -88,7 +89,7 @@
               <!-- If user already "starred" this event, it should be a yellow star -->
               <!-- <a onclick='toggleInterest(this, "{{ event_id }}"))'class="btn-floating btn-small waves-effect waves-light scale-transition scale-in yellow"><iclass="material-icons">star</i></a> -->
             </td>
-            <td class="blue-text clickable" onclick="location.href='/events/2.html'">Closing Awards Ceremony</td>
+            <td class="blue-text clickable" onclick="location.href='/events/2'">Closing Awards Ceremony</td>
             <td> <a href='?filter=location:Auditorium'>Auditorium </a></td>
             <td><a href='?filter=date:05-02-2021'>May 2 (Sun)</a> 11:00 AM</td>
             <td>30m</td>
@@ -97,7 +98,7 @@
             <!-- ADMIN ONLY BUTTONS -->
             <td nowrap>
 
-              <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="./eventform.html"><i
+              <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="/events/{{event_id}}/modify"><i
                   class="material-icons">edit</i></a>
               <a class="btn-floating waves-effect waves-light red"
                 onclick='confirmDelete("Opening Ceremony","{{ event_id}}")'><i class="material-icons">delete</i></a>
@@ -109,6 +110,6 @@
       </table>
     </div>
 
-    <a href="/eventform.html" class="btn-floating btn-large orange fixed-action-btn">
+    <a href="/events/create" class="btn-floating btn-large orange fixed-action-btn">
       <i class="large material-icons">create</i>
     </a>
