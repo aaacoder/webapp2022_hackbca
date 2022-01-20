@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET events "home" page - a list of all events. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'HackBCA 20XX', style: "index" });
+  res.render('index', { title: 'Events', style: ["tables", "event"] });
 });
 
 module.exports = router;

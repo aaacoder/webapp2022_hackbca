@@ -1,10 +1,101 @@
+<!--   
+   Largely based on a simple starter template.
+   https://materializecss.com/templates/starter-template/preview.html
+
+   See the files in index_progress for a progressive build of this file.
+ -->
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>{{ title }}</title>
+  <link rel="shortcut icon" type="image/jpg" href="/images/favicon.ico" />
+
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="/styles/materialize.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <!-- Shared site-wide CSS  -->
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- Page specific CSS -->
+  {{#if style}}
+  <link rel="stylesheet" href="/styles/{{style}}.css">
+  {{/if}}
+  {{#each styles}}
+  <link rel="stylesheet" href="/styles/{{this}}.css">
+  {{/each}}
+  
+</head>
+
+<body>
+
+  <!-- https://materializecss.com/navbar.html -->
+  <header>
+    <nav>
+      <div class="nav-wrapper">
+        <img class="hide-on-small-and-down" src="/images/bca-logo-transparent.png">
+        <a href="/" class="brand-logo">HackBCA 20XX</a>
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="desktop-nav" class="right hide-on-med-and-down">
+          <li><a href="/events.html"><i class="material-icons left">event</i>Events</a></li>
+          <li><a href="/attendees.html"><i class="material-icons left">people</i>Attendees</a></li>
+          <li><a href="/projects.html"><i class="material-icons left">build</i>Projects</a></li>
+          <li><a href="/login.html" class="btn">Login / Register</a></li>
+        </ul>
+      </div>
+    </nav>
+    <ul id="mobile-nav" class="sidenav">
+      <li><a href="/events.html"><i class="material-icons left">event</i>Events</a></li>
+      <li><a href="/attendees.html"><i class="material-icons left">people</i>Attendees</a></li>
+      <li><a href="/projects.html"><i class="material-icons left">build</i>Projects</a></li>
+      <li><a href="/login.html" class="btn">Login / Register</a></li>
+    </ul>
+  </header>
+
+  <main>
+    {{{ body }}}
+  </main>
+
+  <!-- https://materializecss.com/footer.html -->
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Sponsors</h5>
+          <p>hackBCA is brought to you by:</p>
+          <ul>
+            <li>BCA PPO</li>
+            <li>Tech-Pa</li>
+            <li>&lt;Corporate Sponsors&gt;</li>
+            <li>Wanna join this list? Sponsor us!</li>
+          </ul>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Contact Us</h5>
+          <ul>
+            <li>Twitter: @hackbca</li>
+            <li>Instagram: @hackbca</li>
+            <li>Facebook: @hackbca</li>
+            <li>Email: hackbca@_____</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        © 2021 Copyright Text
+        <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Compiled and minified Materialize JavaScript -->
+  <script src="/js/materialize.min.js"></script>
+
+  <!-- initialize Materialize elements -->
+  <script> M.AutoInit();</script>
+
+</body>
+
 </html>
