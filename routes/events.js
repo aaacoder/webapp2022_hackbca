@@ -16,7 +16,7 @@ router.get('/:event_id', function(req, res, next) {
   // For now, let's pretend
   let event_data = {event_id: event_id,
                 event_name: "Opening Ceremony", 
-                event_location: "auditorium", 
+                event_location: "Auditorium", 
                 event_date: "May 1 (Sat)",
                 event_time: "10:30 AM",
                 event_duration: "30m",
