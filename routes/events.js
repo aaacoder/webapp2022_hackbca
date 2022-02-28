@@ -4,6 +4,7 @@ var db = require('../db/db')
 
 const fs = require('fs');
 const path = require('path');
+const { redirect } = require('express/lib/response');
 
 function requireAdmin(req, res, next) {
   if (res.locals.isAdmin)
@@ -27,9 +28,9 @@ router.get('/', async function(req, res, next) {
   // });
   
   try {
-    let results = await db.queryPromise(eventsQuery)
-    console.log(results)
-    res.render('index', { title: 'Events', style: "tables", events: results});
+    let results = res.locals.isAuthenticated ? await db.queryPromise(eventsWithUserInterestQuery, [req.db_user_id]): await db.queryPromise(eventsQuery)
+    console.log(results);
+    res.render('events', { title: 'Events', style: "tables", events: results});
   } catch (err) {
     next(err);
   }
@@ -109,6 +110,34 @@ router.post("/", requireAdmin, async function(req, res, next) {
     let event_id_inserted = results.insertId;
     res.redirect("/events/$(event_id_inserted)");
   } catch(err) {
+    next(err);
+  }
+})
+
+let updateEventQuery = fs.readFileSync(path.join(__dirname, "../db/update_event.sql"), "utf-8"); 
+router.post('/:event_id', requireAdmin ,async function(req, res, next) {
+  try {
+    let results = await db.queryPromise(updateEventQuery, [req.body.event_name, 
+      req.body.event_location_id, 
+      req.body.event_type_id, 
+      `${req.body.event_date} ${req.body.event_time}`,
+      req.body.event_duration,
+      req.body.event_description,
+      req.params.event_id // or req.body.event_id, since its a hidden input in the form
+    ]);
+
+  res.redirect(`/events/${req.params.event_id}`);
+  } catch(err) {
+    next(err);
+  }
+})
+
+let deleteEventQuery = "DELETE FROM event WHERE event_id = ?";
+router.get('/:event_id/delete', requireAdmin, async (req, res, next) => {
+  try {
+    await db.queryPromise(deleteEventQuery, req.params.event_id);
+    res.redirect('/events')
+  } catch (err) {
     next(err);
   }
 })

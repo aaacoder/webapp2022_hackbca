@@ -1,115 +1,77 @@
-    <!-- https://materializecss.com/grid -->
+<div class="container">
 
-    <div class="container">
-
-      <h1>Event Schedule</h1>
-
-      <blockquote>
-        Click on the event name for more details!
-        Click on <i class="material-icons tiny">sort</i> to sort by that column, or items in <i
-          class="material-icons tiny">filter_list</i> columns to filter by that item.
-      </blockquote>
-      <div class="row">
-        <div class="col l3 s12 "> <i class="left material-icons">sort</i>Sorted by: Date / Time</div>
-        <div class="col l3 offset-l6 ">
-          <!-- Position differently (left) for mobile -->
-          <div class="right hide-on-small-only"><i class="left material-icons">filter_list</i>Filter: None</div>
-          <div class="left hide-on-med-and-up"><i class="left material-icons">filter_list</i>Filter: None</div>
+  <div class="card">
+    <!-- image is optional -->
+    <div class="card-image">
+        <!-- Added div wrapper to create dark gradient -->
+        <div class="card-image-gradient"> 
+            <img src="/images/assembly.jpg">
         </div>
+        <span class="card-title"><h1>{{event_data.event_name}}</h1></span>
+        {{#if @root.isAuthenticated}}
 
-      </div>
+      <!-- USER ONLY - Initialize page with appropriate state of button -->
+            <!-- If user already "starred" this event, it should be a yellow star -->
+            {{#unless user_interest}} 
+            <a onclick='toggleInterest(this, "{{ event_id }}")' class="btn-floating btn-large halfway-fab waves-effect waves-light scale-transition scale-in blue">
+                <i class="material-icons">star_border</i></a>
+            {{else}}
+            <a onclick='toggleInterest(this, "{{ event_id }}"))'class="btn-floating btn-large halfway-fab waves-effect waves-light scale-transition scale-in yellow">
+                <i class="material-icons">star</i></a>
+            {{/unless}}
 
-      <!-- https://materializecss.com/table -->
-      <table class="highlight centered responsive-table">
-        <thead>
-          <tr>
-            <!-- USER ONLY-->
-            <th><i class="material-icons">star</i>
-              <a href="?sort=starred"><i class="material-icons">sort</i></a>
-            </th> 
-
-            <th>Event</th>
-            <th>Location <a href="?sort=location">
-                <i class="material-icons">sort</i></a>
-              <i class="material-icons">filter_list</i>
-            </th>
-            <th>Date / Time
-              <a href="?sort=datetime"><i class="material-icons">sort</i></a>
-            </th>
-            <th>Duration</th>
-            <th>Type
-              <a href="?sort=type"><i class="material-icons">sort</i></a>
-              <i class="material-icons">filter_list</i>
-            </th>
-            <th>Interest<i class="material-icons">sort</i></th>
-          <!-- ADMIN ONLY BUTTONS -->
-          <th>Admin Op</th>
-          </tr>
-
-        </thead>
-
-        <tbody>
-          <tr>
-            {{#with event_data}}
-
-            <!-- USER ONLY - Initialize page with appropriate state of button -->
-            <td>
-              <a onclick='toggleInterest(this, "{{ event_id }}")'
-                class="btn-floating btn-small waves-effect waves-light scale-transition scale-in blue"><i
-                  class="material-icons">star_border</i></a>
-              <!-- If user already "starred" this event, it should be a yellow star -->
-              <!-- <a onclick='toggleInterest(this, "{{ event_id }}"))'class="btn-floating btn-small waves-effect waves-light scale-transition scale-in yellow"><iclass="material-icons">star</i></a> -->
-            </td>
-            <td class="blue-text clickable" onclick="location.href='/events/1'"></td>
-            <td> <a href='?filter=location:Auditorium'>{{event_location}}</a></td>
-            <td><a href='?filter=date:05-01-2022'>{{event_date}}</a>{{event_time}}</td>
-            <td>{{event_duration}}</td>
-            <td> <a href='?filter=type:Main'>{{event_type}}</a></td>
-            <td>{{event_interest}}<i class=material-icons>people</i></td>
-            <!-- ADMIN ONLY BUTTONS -->
-            <td nowrap>
-
-              <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="/eventform"><i
-                  class="material-icons">edit</i></a>
-              <a class="btn-floating waves-effect waves-light red"
-                onclick='confirmDelete("Opening Ceremony","{{ event_id}}", ".")'><i
-                  class="material-icons">delete</i></a>
-
-            </td>
-          </tr>
-
-          <tr>
-
-            <!-- USER ONLY - Initialize page with appropriate state of button -->
-
-            <td>
-              <a onclick='toggleInterest(this, "{{ event_id }}")'
-                class="btn-floating btn-small waves-effect waves-light scale-transition scale-in blue"><i
-                  class="material-icons">star_border</i></a>
-              <!-- If user already "starred" this event, it should be a yellow star -->
-              <!-- <a onclick='toggleInterest(this, "{{ event_id }}"))'class="btn-floating btn-small waves-effect waves-light scale-transition scale-in yellow"><iclass="material-icons">star</i></a> -->
-            </td>
-            <td class="blue-text clickable" onclick="location.href='/events/2'">Closing Awards Ceremony</td>
-            <td> <a href='?filter=location:Auditorium'>Auditorium </a></td>
-            <td><a href='?filter=date:05-02-2021'>May 2 (Sun)</a> 11:00 AM</td>
-            <td>30m</td>
-            <td> <a href='?filter=type:Main'>Main</a></td>
-            <td>99<i class=material-icons>people</i></td>
-            <!-- ADMIN ONLY BUTTONS -->
-            <td nowrap>
-
-              <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="/events/{{event_id}}/modify"><i
-                  class="material-icons">edit</i></a>
-              <a class="btn-floating waves-effect waves-light red"
-                onclick='confirmDelete("Opening Ceremony","{{ event_id}}")'><i class="material-icons">delete</i></a>
-
-            </td>
-          </tr>
-
-        </tbody>
-      </table>
+        {{/if}}                    
     </div>
+    <div class="card-content">
 
-    <a href="/events/create" class="btn-floating btn-large orange fixed-action-btn">
-      <i class="large material-icons">create</i>
-    </a>
+        <table class="centered responsive-table">
+            <thead>
+                <tr>
+                <th>Location </th>
+                <th>Date / Time </th>
+                <th>Duration</th>
+                <th>Type </th>
+                <th>Interest </th>
+                <!-- ADMIN ONLY BUTTONS -->
+                {{#if @root.isAdmin}}
+
+                <th>Admin Op</th>
+                {{/if}}
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                {{#with event_data}}
+                <td>{{event_location}}</td>
+                <td>{{event_date}} {{event_time}}</td>
+                <td>{{event_duration}}</td>
+                <td>{{event_type}}</td>
+                <td>{{event_interest}}<i class=material-icons>people</i></td>
+                <!-- ADMIN ONLY BUTTONS -->
+                {{#if @root.isAdmin}}
+
+                <td nowrap>
+                  
+                    <!-- Alternatively to going to a new page, trigger a modal ??-->
+                    <a class="btn-floating waves-effect waves-light green lighten-1" href="/events/{{event_id}}/modify"><i class="material-icons">edit</i></a>
+                    <a class="btn-floating waves-effect waves-light red" onclick='confirmDelete("Opening Ceremony","{{ event_id}}", "/events")'><i class="material-icons">delete</i></a>
+
+                </td>
+                {{/if}}
+
+            </tbody>
+        </table>
+        <div class="container event-description">{{event_description}}</div>
+        
+        {{/with}}
+        
+        <!-- TODO: Add a scrollable table (or series of cards??) listing the attendees who are interested -->
+        <!-- https://vembarrajan.medium.com/html-css-tricks-scroll-able-table-body-tbody-d23182ae0fbc -->
+    </div>
+  </div>
+    
+
+</div>
+
+<script src="/js/event_utils.js"></script>

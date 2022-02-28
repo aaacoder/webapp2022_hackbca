@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const {requireAuth} = require('express-open-id-connect');
+const {requiresAuth} = require('express-open-id-connect');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   , style: "index" });
 });
 
-router.get('/profile', requireAuth(), (req, res) => {
+router.get('/profile', requiresAuth(), (req, res) => {
   res.send(req.oidc.user);
 })
 
