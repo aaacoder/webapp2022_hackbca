@@ -5,7 +5,16 @@ var db = require('../db/db')
 const fs = require('fs');
 const path = require('path');
 
+function requireAdmin(req, res, next) {
+  if (res.locals.isAdmin)
+    next();
+  else
+    res.redirect("/");
+    // redirect to homepage
+}
+
 let eventsQuery = fs.readFileSync(path.join(__dirname, "../db/select_events.sql"), "utf-8");
+let eventsWithUserInterestQuery = fs.readFileSync(path.join(__dirname, "../db/select_events_with_user_interest.sql"), "utf-8");
 
 /* GET events "home" page - a list of all events. */
 router.get('/', async function(req, res, next) {
@@ -30,7 +39,7 @@ router.get('/', async function(req, res, next) {
 let event_locations_query = fs.readFileSync(path.join(__dirname, "../db/select_event_locations.sql"), "utf-8");
 let event_types_query = fs.readFileSync(path.join(__dirname, "../db/select_event_types.sql"), "utf-8");
 
-router.get('/create', async function(req, res, next) {
+router.get('/create', requireAdmin, async function(req, res, next) {
   try {
     let event_locations = await db.queryPromise(event_locations_query);
     let event_types = await db.queryPromise(event_types_query);
@@ -70,7 +79,7 @@ router.get('/:event_id', function(req, res, next) {
   })
 })
 
-router.get('/:event_id/modify', await function(req, res, next) {
+router.get('/:event_id/modify', requireAdmin, async function(req, res, next) {
   try {
     let event_locations = await db.queryPromise(event_locations_query);
     let event_types = await db.queryPromise(event_types_query);
@@ -85,7 +94,7 @@ router.get('/:event_id/modify', await function(req, res, next) {
 
 let insertEventQuery = fs.readFileSync(path.join(__dirname, "../db/insert_event.sql"), "utf-8");
 
-router.post("/", async function(req, res, next) {
+router.post("/", requireAdmin, async function(req, res, next) {
   // "event_name", "event_location_id", "event_type_id", "event_dt", "event_duration", "event_description"
   
   try {

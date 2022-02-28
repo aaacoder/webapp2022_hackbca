@@ -53,6 +53,7 @@
           <tr>
 
             <!-- USER ONLY - Initialize page with appropriate state of button -->
+            {{#if @root.isAuthenticated}}
             <td>
               <a onclick='toggleInterest(this, "{{ event_id }}")'
                 class="btn-floating btn-small waves-effect waves-light scale-transition scale-in blue"><i
@@ -60,13 +61,17 @@
               <!-- If user already "starred" this event, it should be a yellow star -->
               <!-- <a onclick='toggleInterest(this, "{{ event_id }}"))'class="btn-floating btn-small waves-effect waves-light scale-transition scale-in yellow"><iclass="material-icons">star</i></a> -->
             </td>
+            {{/if}}
+
             <td class="blue-text clickable" onclick="location.href='/events/{{event_id}}'">{{event_name}}</td>
             <td> <a href='?filter=location:{{event_location}}'>{{event_location}} </a></td>
             <td><a href='?filter=date:{{event_date_ymd}}'>{{event_date}}</a> {{event_time}}</td>
             <td>{{event_duration}}</td>
             <td> <a href='?filter=type:{{event_type}}'>{{event_type}}</a></td>
             <td>{{event_interest}}<i class=material-icons>people</i></td>
+            
             <!-- ADMIN ONLY BUTTONS -->
+            {{#if @root.isAdmin}}
             <td nowrap>
 
               <a class="btn-floating btn-small waves-effect waves-light green lighten-1" href="/eventform"><i
@@ -76,6 +81,7 @@
                   class="material-icons">delete</i></a>
 
             </td>
+            {{/if}}
           </tr>
           {{/each}}
 
@@ -84,6 +90,10 @@
       </table>
     </div>
 
+    {{#if @root.isAdmin}}
+
     <a href="/events/create" class="btn-floating btn-large orange fixed-action-btn">
       <i class="large material-icons">create</i>
     </a>
+
+    {{/if}}

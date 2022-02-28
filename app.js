@@ -10,6 +10,8 @@ var eventsRouter = require('./routes/events');
 
 var app = express();
 
+const db = require("./db");
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -19,6 +21,34 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: 'a long, randomly-generated string stored in env',
+  baseURL: 'http://localhost:3000',
+  clientID: 'vblWx07vN1UdFj6KQRhH0SOfFVq8imOZ',
+  issuerBaseURL: 'https://dev-mwpkkjd7.us.auth0.com'
+};
+app.use(auth(config));
+
+app.use( async (req, res, next) => {
+  res.locals.isAuthenticated = req.oidc.isAuthenticated();
+  if (res.locals.isAuthenticated) {
+    let results = await db.queryPromise("SELECT user_id, admin FROM user WHERE email = ?", [req.oidc.user.email])
+    if (results.length > 0) {
+      res.locals.isAdmin = (results[0].admin == 1)
+      req.db_user_id = results[0].user_id
+    }
+    else {
+      //if no account yet, set up user row in database (account info)
+      let insertResults = await db.queryPromise("INSERT INTO user (email) VALUES (?)", [req.oidc.user.email])
+      res.locals.isAdmin = false;
+      req.db.user_id = insertResults.insertedId;
+    }  
+  }
+  next();
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
