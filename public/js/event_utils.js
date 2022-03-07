@@ -13,6 +13,7 @@ function confirmDelete(event_name, event_id, redirect_to){
 }
 
 function toggleInterest(interestButton, event_id){
+    console.log("Toggle!");
     let interestButtonIcon = interestButton.children[0];
     switch(interestButtonIcon.textContent) {
     case "star_border": //currently off, toggle on.
@@ -44,4 +45,10 @@ function toggleInterest(interestButton, event_id){
     }
     //Until server response comes, show a "processing" symbol - which means clicking does nothing until response comes.
     interestButtonIcon.textContent = "star_half";
+    interestButton.classList.replace("scale-in", "scale-out");
+
+    fetch(`/events/${event_id}/register`, {
+        method: "GET",
+        credentials: "include"
+    })
 }

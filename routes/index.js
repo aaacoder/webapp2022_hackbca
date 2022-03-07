@@ -15,4 +15,10 @@ router.get('/profile', requiresAuth(), (req, res) => {
   res.send(req.oidc.user);
 })
 
+router.get("/testjson", (req, res) => {
+  res.json({
+    message: "Hello!"
+  })
+})
+
 module.exports = router;
